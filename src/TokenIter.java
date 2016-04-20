@@ -10,7 +10,6 @@ public class TokenIter implements Iterator<String> {
     private String nextToken;
     private int index;
      
-     
     // implement
     public TokenIter(String line) {
         this.line = line;
