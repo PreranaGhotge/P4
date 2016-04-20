@@ -19,20 +19,48 @@ public class TokenIter implements Iterator<String> {
         
     public String getNextToken(String newLine) {
  
-        while (nextToken == null && index < newLine.length()) {
+        mainloop:
+    	while (nextToken == null && index < newLine.length()) {
              
-            if(Character.isDigit(newLine.charAt(index))) {
-                nextToken = Character.toString(newLine.charAt(index));
-                if(index < newLine.length()-1) {
-                index++;
-                }
-                else {
-                    index++;
-                    break;
-                }
-                //System.out.println(index);
+            if(Character.isLetter(newLine.charAt(index))) {
+            	while(Character.isLetterOrDigit(newLine.charAt(index))) {
+            		nextToken = nextToken + Character.toString(newLine.charAt(index));
+            		if(index < newLine.length()-1) {
+            			index++;
+            		}
+            		else {
+            			index++;
+            			break mainloop;
+            		}
+            	}
+            	break;
+            }
+            
+            switch(newLine.charAt(index)) {
+            
+            case '=':
+            case '!':
+            case '|':
+            case '&':
+            case '(':
+            case ')':
+            case '0':
+            case '1': {
+            	nextToken = Character.toString(newLine.charAt(index));
+            	index++;
+            	break;
+            }
+            
+            default: {
+            	index++;
+            }
+            
+            }
+    	}
+            	
+                
  
-                floponloop:
+                /*floponloop:
                     while(Character.isDigit(newLine.charAt(index)) || newLine.charAt(index)=='.' || newLine.charAt(index)=='e') {
                         switch(newLine.charAt(index)) {
  
@@ -158,7 +186,7 @@ public class TokenIter implements Iterator<String> {
             }
  
  
-        }
+        }*/
  
         return nextToken;
     }

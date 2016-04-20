@@ -3,6 +3,7 @@ public class Tree {
     // Provided, DON'T CHANGE
     // the root of the tree
     private TreeNode root;
+    private BST symbolTable;
 
     //empty tree
     public Tree(){
@@ -10,8 +11,9 @@ public class Tree {
     }
 
     // rootItem, empty children
-    public Tree(TreeNode root){
+    public Tree(TreeNode root,BST symbolTable){
 	this.root = root;
+	this.symbolTable = symbolTable;
     }
 
     public boolean isEmpty(){
@@ -38,33 +40,33 @@ public class Tree {
     // if tree empty return null
     // else evaluate the tree by postorder traversal 
     // and return its value
-    public Double postorderEval(){
-	Double res = null;
+    public Boolean postorderEval(){
+	Boolean res = null;
 	if (!isEmpty())
-	    res = postorderEval(root);
+	    res = postorderEval(root,symbolTable);
 	return res;
     }
 
 
     // IMPLEMENT
 
-    public Double postorderEval(TreeNode node){
+    public Boolean postorderEval(TreeNode node, BST symTab){
 	// evaluate left tree
     // evaluate right tree (if not null)
     // evaluate operator in node and return Double result
-    	Double res = 0.0;
-    	Double left = null;
-    	Double right = null;
+    	Boolean res = null;
+    	Boolean left = null;
+    	Boolean right = null;
     	
     	if(node.getLeft()!=null) {
-    		left = postorderEval(node.getLeft());
+    		left = postorderEval(node.getLeft(),symTab);
     	}
     	else {
-    		return Double.parseDouble(node.getItem());
+    		return Boolean.parseBoolean(node.getItem());
     	}
     	
     	if(node.getRight()!=null) {
-    		right = postorderEval(node.getRight());
+    		right = postorderEval(node.getRight(),symTab);
     	}
     	/*else {
     		System.out.println("token whn entering here:"+node.getItem());
@@ -74,36 +76,33 @@ public class Tree {
     	//System.out.println(left);
     	//System.out.println(right);
     	
+    	
     	switch(node.getItem()) {
     	
-    	case "abs": {
-    		res = Math.abs(left);
+    	case "|": {
+    		if (left.equals(true) || right.equals(true)) {
+    			res = true;
+    		}
+    		else {
+    			res = false;
+    		}
     		break;
     	}
     	
-    	case "+": {
-    		res = left + right;
-    		//System.out.println(res);
+    	case "&": {
+    		if (left.equals(true) && right.equals(true)) {
+    			res = true;
+    		}
+    		else {
+    			res = false;
+    		}
     		break;
     	}
     	
-    	case "-": {
-    		res = left - right;
-    		break;
+    	case "!": {
+    		res = !(left);
     	}
-    	
-    	case "/\\": {
-    		res = Math.max(left,right);
-    		break;
-    	}
-    	
-    	case "\\/": {
-    		res = Math.min(left,right);
-    		break;
-    	}
-    	
-    	default: {
-    	}
+   
     	}
     	
     	return res;
@@ -111,7 +110,7 @@ public class Tree {
 
 
     // EXERCISE
-    public static void main(String[] args){
+    /*public static void main(String[] args){
 	System.out.println("Stepwise build infix expression: 5.6 + 7.8");
 	
 	Tree t = new Tree();
@@ -128,5 +127,5 @@ public class Tree {
 	t = new Tree(plus);
 	System.out.println("tree: "); t.preorderTraverse();	
 	System.out.println("result:\n" + t.postorderEval()+"\n");
-    }
+    }*/
 }

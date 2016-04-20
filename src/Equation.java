@@ -30,15 +30,37 @@ public class Equation {
     // TODO
     public IdVal line(BST symbolTable) throws BSTException, ParseException {
         //System.out.println("Calling line");
+    	String id=null;
+    	Boolean val;
+    	IdVal res=null;
+    	if(nextToken!=null) {
+    		id = nextToken;
+    		if(itTokens.hasNext()) {
+    			nextToken = itTokens.next();
+    			if(nextToken.equals("=")) {
+    				if(itTokens.hasNext()) {
+    					nextToken = itTokens.next();
+    				}
+    				else {
+    					nextToken = null;
+    				}
+    			}
+    			else {
+    				nextToken = null;
+    			}
+    		}
+    	}
         TreeNode root;
         Tree tree = new Tree();
         if (nextToken!=null) {
             root = expr("");
-            tree = new Tree(root);
+            tree = new Tree(root,symbolTable);
+            val = tree.postorderEval();
+            res = new IdVal(id,val);
         }
         if (nextToken!=null)
             error("end of line expected");
-        return tree;
+        return res;
     }
  
  
@@ -279,7 +301,7 @@ public class Equation {
         return leaf;
     }
      
-    public static void main(String[] args) throws ParseException {
+    /*public static void main(String[] args) throws ParseException {
         System.out.println("Testing ParseTreeExpr");
         String line = args[0];
         System.out.println("next line: [" + line +"]");
@@ -291,5 +313,5 @@ public class Equation {
         pTree.preorderTraverse();
          
         System.out.println("result: " + pTree.postorderEval());
-    }
+    }*/
 }
