@@ -57,6 +57,10 @@ public class Equation {
             tree = new Tree(root,symbolTable);
             val = tree.postorderEval();
             res = new IdVal(id,val);
+            symbolTable.insertItem(res);
+        }
+        else {
+        	error("Invalid equation");
         }
         if (nextToken!=null)
             error("end of line expected");
@@ -70,154 +74,152 @@ public class Equation {
     	if(nextToken.equals(")")) {
     		return null;
     	}
-        TreeNode root = null;
-        TreeNode left = term(" ");
-        
-        if(nextToken!=null) {
-        	switch(nextToken) {
-        	case "+":
-        	case "-": {
-        		String sign = nextToken;
-        		if(!(itTokens.hasNext())) {
-        			error("invalid expression");
-        		}
-        		else {
-        			nextToken = itTokens.next();
-        			if(nextToken.equals(")")) {
-        				error("invalid expression");
-        			}
-        			else if (nextToken.equals("(")){
-        				if(!(itTokens.hasNext())) {
-        					error("invalid expression");
-        				}
-        				else {
-        					nextToken = itTokens.next();
-        					TreeNode right = expr(" ");
-        					root = new TreeNode(sign,left,right);
-        					if(!(nextToken == null)) {
-        						if(nextToken.equals(")")) {
-        							if(itTokens.hasNext()) {
-                						nextToken = itTokens.next();
-                					}
-        							else {
-        								nextToken = null;
-        							}
-        						}
-        					}
-        					
-        					break;
-        				}
-        			}
-        			else {
-        				TreeNode right = term(" ");
-        				root = new TreeNode(sign,left,right);
-        				break;
-        			}
-        		}
-        	}
+    	TreeNode root = null;
+    	TreeNode left = term(" ");
 
-        	case ")": {
+    	if(nextToken!=null) {
+    		if(nextToken.equals("|")) {
+    			//case "+":
+    			//case "-": {
+    			String sign = nextToken;
+    			if(!(itTokens.hasNext())) {
+    				error("invalid expression");
+    			}
+    			else {
+    				nextToken = itTokens.next();
+    				if(nextToken.equals(")")) {
+    					error("invalid expression");
+    				}
+    				else if (nextToken.equals("(")){
+    					if(!(itTokens.hasNext())) {
+    						error("invalid expression");
+    					}
+    					else {
+    						nextToken = itTokens.next();
+    						TreeNode right = expr(" ");
+    						root = new TreeNode(sign,left,right);
+    						if(!(nextToken == null)) {
+    							if(nextToken.equals(")")) {
+    								if(itTokens.hasNext()) {
+    									nextToken = itTokens.next();
+    								}
+    								else {
+    									nextToken = null;
+    								}
+    							}
+    						}
+
+    						//break;
+    					}
+    				}
+    				else {
+    					TreeNode right = term(" ");
+    					root = new TreeNode(sign,left,right);
+    					//break;
+    				}
+    			}
+    		}
+
+    		/*case ")": {
         		root = left;//just one term in parentheses
-        	}
-        	}
-        }
-        else {
-        	root = left;
-        }
+        	}*/
+    	}
 
-        if(nextToken != null) {
-        	while(nextToken.equals("+") || nextToken.equals("-")) {
-        		left = root;
-        		String sign = nextToken;
-        		if(!(itTokens.hasNext())) {
-        			error("invalid expression");
-        		}
-        		else {
-        			nextToken = itTokens.next();
-        			TreeNode right = term("  ");
-        			root = new TreeNode(sign,left,right);
-        			if(nextToken == null) {
-        				break;
-        			}
-        		}
+    	else {
+    		root = left;
+    	}
 
-        	}
-        }
+    	if(nextToken != null) {
+    		while(nextToken.equals("|")) {
+    			left = root;
+    			String sign = nextToken;
+    			if(!(itTokens.hasNext())) {
+    				error("invalid expression");
+    			}
+    			else {
+    				nextToken = itTokens.next();
+    				TreeNode right = term("  ");
+    				root = new TreeNode(sign,left,right);
+    				if(nextToken == null) {
+    					break;
+    				}
+    			}
 
-        if(!(nextToken == null)) {
-			if(nextToken.equals(")")) {
-				if(!(itTokens.hasNext())) {
-					nextToken = null;
-				}
-			}
-		}
-        return root;
+    		}
+    	}
+
+    	if(nextToken != null) {
+    		if(nextToken.equals(")")) {
+    			if(!(itTokens.hasNext())) {
+    				nextToken = null;
+    			}
+    		}
+    	}
+    	return root;
     }
-         
-        
-    
-             
-             
-         
+  
  
-    // term = factor ( ("/\" | "\/") factor )*
+    // term
     private TreeNode term(String indent) throws ParseException {
-        TreeNode root = null;
-        TreeNode left = factor("  ");
-        if(nextToken!=null) {
-            switch(nextToken) {
+    	TreeNode root = null;
+    	TreeNode left = factor("  ");
+    	if(nextToken!=null) {
+    		/*switch(nextToken) {
             case "/\\":
-            case "\\/": {
-                String sign = nextToken;
-                if(!(itTokens.hasNext())) {
-                    error("invalid expression");
-                }
-                else {
-                    nextToken = itTokens.next();
-                    if(nextToken.equals(")")) {
-                        error("invalid expression");
-                    }
-                    else if (nextToken.equals("(")){
-        				if(!(itTokens.hasNext())) {
-        					error("invalid expression");
-        				}
-        				else {
-        					nextToken = itTokens.next();
-        					TreeNode right = expr("   ");
-        					root = new TreeNode(sign,left,right);
-        					if(!(nextToken == null)) {
-        						if(nextToken.equals(")")) {
-        							if(itTokens.hasNext()) {
-                						nextToken = itTokens.next();
-                					}
-        						}
-        					}
-        					break;
-        				}
-        			}
-                    else {
-                        TreeNode right = factor("  ");
-                        root = new TreeNode(sign,left,right);
-                        break;
-                    }
-                }
-            }
-             
-            case ")": {
+            case "\\/": {*/
+    		if(nextToken.equals("&")) {
+    			String sign = nextToken;
+    			if(!(itTokens.hasNext())) {
+    				error("invalid expression");
+    			}
+    			else {
+    				nextToken = itTokens.next();
+    				if(nextToken.equals(")")) {
+    					error("invalid expression");
+    				}
+    				else if (nextToken.equals("(")){
+    					if(!(itTokens.hasNext())) {
+    						error("invalid expression");
+    					}
+    					else {
+    						nextToken = itTokens.next();
+    						TreeNode right = expr("   ");
+    						root = new TreeNode(sign,left,right);
+    						if(!(nextToken == null)) {
+    							if(nextToken.equals(")")) {
+    								if(itTokens.hasNext()) {
+    									nextToken = itTokens.next();
+    								}
+    							}
+    						}
+    						//break;
+    					}
+    				}
+    				else {
+    					TreeNode right = factor("  ");
+    					root = new TreeNode(sign,left,right);
+    					//break;
+    				}
+    			}
+    			//}
+
+    			/*case ")": {
                 root = left;//just one term in parentheses
             }
-             
+
             default: {
                 root = left;
-            }
-            }
-        }
-        else {
-            root = left;
-        }
+            }*/
+    			//}
+    		}
+    	}
+    	else {
+    		root = left;
+    	}
+        
         
         if(nextToken != null) {
-        while(nextToken.equals("/\\") || nextToken.equals("\\/")) {
+        while(nextToken.equals("&") ) {
             left = root;
             String sign = nextToken;
             if(!(itTokens.hasNext())) {
@@ -239,18 +241,18 @@ public class Equation {
     }
     
  
-    // factor = "abs" factor | "(" expr ")" | flopon
+   //factor
     private TreeNode factor(String indent) throws ParseException {
         TreeNode root;
         switch(nextToken) {
-        case "abs": {
+        case "!": {
             if(!(itTokens.hasNext())) {
                 error("invalid expression");
             }
             else {
                 nextToken = itTokens.next();
                 TreeNode child = factor("   ");
-                root = new TreeNode("abs",child);
+                root = new TreeNode("!",child);
                 break;
             }
         }
@@ -260,11 +262,10 @@ public class Equation {
         		error("invalid expression");
         	}
         	else {
-        		//chk = true;
         		nextToken = itTokens.next();
         		//System.out.println("expr called");
         		root = expr("   ");
-        		if(!(nextToken == null)) {
+        		if(nextToken != null) {
 					if(nextToken.equals(")")) {
 						if(itTokens.hasNext()) {
     						nextToken = itTokens.next();
@@ -275,20 +276,28 @@ public class Equation {
         	}
         }
 
-         
+        //TODO 
         case ")": {
         	error("invalid expression");
         }
-         
+        
         default: {
-            root = flopon("   ");
+        	root = new TreeNode(nextToken);
+        	if(itTokens.hasNext()) {
+                nextToken = itTokens.next();
+            }
+            else {
+                nextToken = null;
+            }
+        	break;
         }
+         
         }         
         return root;
     }
  
     // flopon = digits ("." digits)? ("e" ("+"|"-") digs)?
-    private TreeNode flopon(String indent) throws ParseException {
+    /*private TreeNode flopon(String indent) throws ParseException {
         //precondition: No bad tokens
         TreeNode leaf;
         leaf = new TreeNode(nextToken);
@@ -299,7 +308,7 @@ public class Equation {
             nextToken = null;
         }
         return leaf;
-    }
+    }*/
      
     /*public static void main(String[] args) throws ParseException {
         System.out.println("Testing ParseTreeExpr");
