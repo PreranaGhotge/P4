@@ -1,3 +1,4 @@
+//using R7 code
 
 public class BST{
 	// this Binary Search Tree is used for the implementation of the 
@@ -42,11 +43,11 @@ public class BST{
 			throw new BSTException("Inserting item with existing key!");
 	}
 
-	public IdVal retrieveItem(String key){
+	public IdVal retrieveItem(String key) throws BSTException{
 		return retrieveItem(root,key);
 	}
 	
-	private IdVal retrieveItem(BSTNode<IdVal> node, String key){
+	private IdVal retrieveItem(BSTNode<IdVal> node, String key) throws BSTException{
 		IdVal treeItem;
 		
 		if(node==null)
@@ -63,25 +64,15 @@ public class BST{
 				// search right
 				treeItem = retrieveItem(node.getRight(), key);
 		}
+		
+		if(treeItem==null) {
+			throw new BSTException("undefined symbol read from symbol table");
+		}
+		
 		return treeItem;
 
 	}
 	
-	/** DELETE
-deleteItem(in rootNode:TreeNode, in searchKey:KeyType): TreeNode
-	if (rootNode is null){ throw TreeException}
-	else if (searchKey equals key in rootNode item) { //found it
-		newRoot = deleteNode(rootNode)
-		return newRoot }
-	else if (searchKey < key in rootNode item) { //search left
-		newLeft = deleteItem(rootNode.getLeft(), searchKey)
-		rootNode.setLeft(newLeft)
-		return rootNode }
-	else { // search right
-		newRight = deleteItem(rootNode.getRight(), searchKey)
-		rootNode.setRight(newRight)
-		return rootNode }
-	*/
 
 	public void deleteItem(String key)throws BSTException{
 		root = deleteItem(root,key);

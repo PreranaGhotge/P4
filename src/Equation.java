@@ -35,6 +35,7 @@ public class Equation {
     	IdVal res=null;
     	if(nextToken!=null) {
     		id = nextToken;
+    		//System.out.println("id:"+id);
     		if(itTokens.hasNext()) {
     			nextToken = itTokens.next();
     			if(nextToken.equals("=")) {
@@ -60,7 +61,7 @@ public class Equation {
             symbolTable.insertItem(res);
         }
         else {
-        	error("Invalid equation");
+        	res = null;
         }
         if (nextToken!=null)
             error("end of line expected");
@@ -79,8 +80,7 @@ public class Equation {
 
     	if(nextToken!=null) {
     		if(nextToken.equals("|")) {
-    			//case "+":
-    			//case "-": {
+    			
     			String sign = nextToken;
     			if(!(itTokens.hasNext())) {
     				error("invalid expression");
@@ -120,9 +120,6 @@ public class Equation {
     			}
     		}
 
-    		/*case ")": {
-        		root = left;//just one term in parentheses
-        	}*/
     	}
 
     	else {
@@ -153,6 +150,9 @@ public class Equation {
     			if(!(itTokens.hasNext())) {
     				nextToken = null;
     			}
+    			else {
+    				nextToken = itTokens.next();
+    			}
     		}
     	}
     	return root;
@@ -164,9 +164,6 @@ public class Equation {
     	TreeNode root = null;
     	TreeNode left = factor("  ");
     	if(nextToken!=null) {
-    		/*switch(nextToken) {
-            case "/\\":
-            case "\\/": {*/
     		if(nextToken.equals("&")) {
     			String sign = nextToken;
     			if(!(itTokens.hasNext())) {
@@ -201,16 +198,9 @@ public class Equation {
     					//break;
     				}
     			}
-    			//}
-
-    			/*case ")": {
-                root = left;//just one term in parentheses
-            }
-
-            default: {
-                root = left;
-            }*/
-    			//}
+    		}
+    		else {
+    			root = left;
     		}
     	}
     	else {
@@ -263,7 +253,6 @@ public class Equation {
         	}
         	else {
         		nextToken = itTokens.next();
-        		//System.out.println("expr called");
         		root = expr("   ");
         		if(nextToken != null) {
 					if(nextToken.equals(")")) {
@@ -272,11 +261,11 @@ public class Equation {
     					}
 					}
 				}
+        		
         		break;
         	}
         }
 
-        //TODO 
         case ")": {
         	error("invalid expression");
         }
@@ -292,35 +281,8 @@ public class Equation {
         	break;
         }
          
-        }         
+        }
         return root;
     }
  
-    // flopon = digits ("." digits)? ("e" ("+"|"-") digs)?
-    /*private TreeNode flopon(String indent) throws ParseException {
-        //precondition: No bad tokens
-        TreeNode leaf;
-        leaf = new TreeNode(nextToken);
-        if(itTokens.hasNext()) {
-            nextToken = itTokens.next();
-        }
-        else {
-            nextToken = null;
-        }
-        return leaf;
-    }*/
-     
-    /*public static void main(String[] args) throws ParseException {
-        System.out.println("Testing ParseTreeExpr");
-        String line = args[0];
-        System.out.println("next line: [" + line +"]");
-        TokenIter tokIt = new TokenIter(line);
-        ParseTreeExpr buildTree = new ParseTreeExpr(tokIt, false);
-        Tree pTree = buildTree.line();
-         
-        System.out.println("expression tree:"); 
-        pTree.preorderTraverse();
-         
-        System.out.println("result: " + pTree.postorderEval());
-    }*/
 }

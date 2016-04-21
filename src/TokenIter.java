@@ -15,6 +15,7 @@ public class TokenIter implements Iterator<String> {
         this.line = line;
         index = 0;
         newLine = line.replaceAll("\\s+", "");
+        //System.out.println(newLine);
     }
         
     public String getNextToken(String newLine) {
@@ -24,7 +25,12 @@ public class TokenIter implements Iterator<String> {
              
             if(Character.isLetter(newLine.charAt(index))) {
             	while(Character.isLetterOrDigit(newLine.charAt(index))) {
-            		nextToken = nextToken + Character.toString(newLine.charAt(index));
+            		if(nextToken==null) {
+            			nextToken = Character.toString(newLine.charAt(index));
+            		}
+            		else {
+            			nextToken = nextToken + Character.toString(newLine.charAt(index));
+            		}
             		if(index < newLine.length()-1) {
             			index++;
             		}
@@ -57,136 +63,6 @@ public class TokenIter implements Iterator<String> {
             
             }
     	}
-            	
-                
- 
-                /*floponloop:
-                    while(Character.isDigit(newLine.charAt(index)) || newLine.charAt(index)=='.' || newLine.charAt(index)=='e') {
-                        switch(newLine.charAt(index)) {
- 
- 
-                        case '.': {
-                            if(!(index+1>=newLine.length())) {
-                            if(Character.isDigit(newLine.charAt(index+1))) {//check out of bounds error
-                                nextToken = nextToken + newLine.charAt(index);
-                                index++;
-                                break;
-                            }
-                            else {
-                                index++;
-                                nextToken = null;
-                                break floponloop;
-                            }
-                            }
-                            else {
-                                nextToken = null;
-                                break floponloop;
-                            }
-                        }
- 
-                        case 'e': {
-                            if(!(index+2>=newLine.length())) {
-                            if((newLine.charAt(index+1)=='+' || newLine.charAt(index+1)=='-') && (Character.isDigit(newLine.charAt(index+2)))) {
-                                nextToken = nextToken + newLine.charAt(index);
-                                index++;//not considering period after e case since considered 'bad token'
-                            }
-                            else {
-                                index++;
-                                nextToken = null;
-                                break floponloop;
-                            }
-                            }
-                            else {
-                                nextToken = null;
-                                break floponloop;
-                            }
-                        }
- 
-                        default: {//digits
-                            nextToken = nextToken + newLine.charAt(index);
-                            index++;
-                        }
-                        }
-                         
-                        if(index >= newLine.length()) {
-                            break;
-                        }
- 
-                    } 
-            }
- 
-            if(index < newLine.length() && nextToken == null) {
-            switch(newLine.charAt(index)) {
- 
-            case 'a': {
-                if(index+3 < newLine.length()) {
-                        if(newLine.substring(index,index+3).equals("abs")) {
-                            nextToken = "abs";
-                            index += 3;
-                            break;
-                        }
-                        else {
-                            index += 1;
-                            break;
-                        }
-                }
-            }
-             
-            case '(':
-            case ')':
-            case '+':
-            case '-': {
-                nextToken = Character.toString(newLine.charAt(index));
-                index++;
-                break;
-            }
-             
-            case '/': {
-                if(index+1 < newLine.length()) {
-                    if(newLine.charAt(index+1) == '\\') {
-                            nextToken = "/\\";
-                            index++;
-                            break;
-                    }
-                     
-                }
-                else {
-                    index++;
-                    break;
-                }
-            }
-             
-            case '\\': {
-                if(index+1 < newLine.length()) {
-                    if(newLine.charAt(index+1) == '/') {
-                            nextToken = "\\/";
-                            index++;
-                            break;
-                    }
-                     
-                }
-                else {
-                    index++;
-                    break;
-                }
-            }
-             
-            case 'e': {
-                index++;
-                break;
-            }
-             
-             
-            default : {
-                index += 1;
-            }
- 
-            }
-             
-            }
- 
- 
-        }*/
  
         return nextToken;
     }

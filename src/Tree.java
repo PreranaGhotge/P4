@@ -27,9 +27,7 @@ public class Tree {
 	    System.out.println("null");
     }
 
-    // print root item
-    // print left tree
-    // print right tree
+ 
     public void preorderTraverse(TreeNode node, String indent){
 	System.out.println(indent+node.getItem());
 	if (node.getLeft()!=null) preorderTraverse(node.getLeft(),indent+" ");
@@ -37,10 +35,7 @@ public class Tree {
 
     }
 
-    // if tree empty return null
-    // else evaluate the tree by postorder traversal 
-    // and return its value
-    public Boolean postorderEval(){
+    public Boolean postorderEval() throws BSTException{
 	Boolean res = null;
 	if (!isEmpty())
 	    res = postorderEval(root,symbolTable);
@@ -48,12 +43,8 @@ public class Tree {
     }
 
 
-    // IMPLEMENT
 
-    public Boolean postorderEval(TreeNode node, BST symTab){
-	// evaluate left tree
-    // evaluate right tree (if not null)
-    // evaluate operator in node and return Double result
+    public Boolean postorderEval(TreeNode node, BST symTab) throws BSTException{
     	Boolean res = null;
     	Boolean left = null;
     	Boolean right = null;
@@ -62,19 +53,21 @@ public class Tree {
     		left = postorderEval(node.getLeft(),symTab);
     	}
     	else {
-    		return Boolean.parseBoolean(node.getItem());
+    		if(node.getItem().equals("0")) {
+    			return false;
+    		}
+    		else if(node.getItem().equals("1")) {
+    			return true;
+    		}
+    		else {
+    			return symTab.retrieveItem(node.getItem()).val;
+    		}
+    		
     	}
     	
     	if(node.getRight()!=null) {
     		right = postorderEval(node.getRight(),symTab);
     	}
-    	/*else {
-    		System.out.println("token whn entering here:"+node.getItem());
-    		return Double.parseDouble(node.getLeft().getItem());
-    	}*/
-    	
-    	//System.out.println(left);
-    	//System.out.println(right);
     	
     	
     	switch(node.getItem()) {
